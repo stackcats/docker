@@ -1,0 +1,53 @@
+version: "3"  
+
+services:  
+  nsqlookupd:
+    image: nsqio/nsq:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "4160:4160"
+      - "4161:4161"
+    command: nsqlookupd
+    networks:
+      - swarm_network
+
+  nsqd:
+    image: nsqio/nsq:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - nsqlookupd
+    ports:
+      - "4150:4150"
+      - "4151:4151"
+    command: nsqd --broadcast-address=nsqd --lookupd-tcp-address=nsqlookupd:4160 
+    networks:
+      - swarm_network
+
+  nsqadmin:
+    image: nsqio/nsq:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - nsqlookupd
+    ports:
+      - "4171:4171"
+    command: nsqadmin --lookupd-http-address=nsqlookupd:4161
+    networks:
+      - swarm_network
+     
+
+networks:  
+  swarm_network:
+    external:
+      name: stackcats
