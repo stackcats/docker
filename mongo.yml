@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "27017:27017"
+    command: mongod
+    volumes:
+      - /Users/stackcats/data/mongo:/data/db
+    networks:
+      - swarm_network
+
+networks:  
+  swarm_network:
+    external:
+      name: stackcats
