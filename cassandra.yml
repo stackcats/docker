@@ -1,0 +1,12 @@
+version: '3'
+
+services:      
+  cassandra:
+    image: cassandra:2
+    networks:
+      - swarm_network
+
+networks:  
+  swarm_network:
+    external:
+      name: kong-net
