@@ -13,6 +13,8 @@ services:
         condition: on-failure
     ports:
       - "3306:3306"
+    volumes:
+      - /Users/stackcats/data/mysql:/var/lib/mysql
       
   # adminer:
   #   image: adminer
