@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: a1234567
+    volumes:
+      - /Users/stackcats/data/psql:/var/lib/postgresql/data
+    networks:
+      - swarm_network
+     
+
+networks:  
+  swarm_network:
+    external:
+      name: stackcats
